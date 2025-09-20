@@ -235,16 +235,16 @@ network_info() {
     show_progress "네트워크 상태 확인 중..."
     log "=== 네트워크 인터페이스 점검 ===" "HEADER"
     
-    # 네트워크 인터페이스 정보
-    log "네트워크 인터페이스:" "INFO"
-    ip addr show | grep -E '^[0-9]+:' | while read line; do
-        log "  $line" "INFO"
-    done
-    
-    # IP 주소 정보
-    log "IP 주소 정보:" "INFO"
-    ip addr show | grep 'inet ' | while read line; do
-        log "  $line" "INFO"
+    # 네트워크 인터페이스 및 IP 주소 정보 (통합)
+    log "네트워크 인터페이스 및 IP 주소:" "INFO"
+    ip addr show | while read line; do
+        if [[ $line =~ ^[0-9]+: ]]; then
+            # 인터페이스 정보
+            log "  $line" "INFO"
+        elif [[ $line =~ inet ]]; then
+            # IP 주소 정보
+            log "    $line" "INFO"
+        fi
     done
     
     # 라우팅 테이블

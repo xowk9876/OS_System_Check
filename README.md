@@ -68,8 +68,8 @@ windows_system_check.bat --help
 
 ```bash
 # 📥 다운로드 후 바로 실행
-git clone https://github.com/user/repo.git
-cd Shell-Script
+git clone https://github.com/your-repo/system-check-scripts.git
+cd system-check-scripts
 
 # 🔐 실행 권한 부여
 chmod +x rocky_linux_system_check.sh
@@ -124,6 +124,11 @@ chmod +x rocky_linux_system_check.sh
   tcp  LISTEN 0.0.0.0:80 → httpd
   tcp  LISTEN 127.0.0.1:3306 → mysqld
 [ 71%] ██████████████░░░░░░░ [5/7] 네트워크 상태 확인 중...
+네트워크 인터페이스 및 IP 주소:
+  1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536
+    inet 127.0.0.1/8 scope host lo
+  2: ens160: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500
+    inet 192.168.219.111/24 brd 192.168.219.255 scope global noprefixroute ens160
 [ 85%] █████████████████░░░░ [6/7] 성능 상태 확인 중...
 [100%] ████████████████████░ [7/7] 보안 상태 확인 중...
 ========================================
@@ -165,7 +170,7 @@ chmod +x rocky_linux_system_check.sh
 <td><strong>🌐 네트워크</strong></td>
 <td>✅</td>
 <td>✅</td>
-<td>인터페이스 정보, IP 주소, 라우팅 테이블, DNS 설정, 연결 상태</td>
+<td>인터페이스 및 IP 통합 표시, 라우팅 테이블, DNS 설정, 연결 상태</td>
 </tr>
 <tr>
 <td><strong>🔌 서비스/포트</strong></td>
@@ -310,7 +315,10 @@ sudo ./rocky_linux_system_check.sh
 <details>
 <summary><strong>📅 버전 히스토리</strong></summary>
 
-### 🆕 v1.6.0 (2024-01-15)
+### 🆕 v1.6.1 (2024-01-15)
+- ✅ 네트워크 인터페이스 및 IP 주소 통합 표시
+- ✅ 정보 그룹핑 개선으로 가독성 향상
+- ✅ 계층적 네트워크 정보 구조 적용
 - ✅ Rocky Linux 스크립트 완전 최적화
 - ✅ 파일시스템 타입 및 inode 사용률 점검 추가
 - ✅ 네트워크 인터페이스 및 연결 상태 상세 점검
