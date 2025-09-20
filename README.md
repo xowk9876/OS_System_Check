@@ -1,17 +1,6 @@
 # 🖥️ 시스템 점검 스크립트 모음
 
-<div align="center">
-
-![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-![Linux](https://img.shields.io/badge/Rocky%20Linux-8%20%7C%209-10B981?style=for-the-badge&logo=redhat&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-
 **Windows 10/11과 Rocky Linux 8/9 환경을 위한 종합 시스템 점검 도구**
-
-[![GitHub stars](https://img.shields.io/github/stars/user/repo?style=social)](https://github.com/user/repo)
-[![GitHub forks](https://img.shields.io/github/forks/user/repo?style=social)](https://github.com/user/repo/fork)
-
-</div>
 
 ---
 
@@ -313,8 +302,8 @@ sudo ./rocky_linux_system_check.sh
 
 **Tae-system**
 
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/tae-system)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/tae-system)
+[![GitHub](https://github.com/tae-system)](https://github.com/tae-system)
+[![Instagram](https://www.instagram.com/tae_system)](https://www.instagram.com/tae_system)
 
 </div>
 
@@ -358,13 +347,3 @@ sudo ./rocky_linux_system_check.sh
 - ✅ 불필요한 파일 정리 및 간소화
 
 </details>
-
----
-
-<div align="center">
-
-### ⭐ 이 프로젝트가 도움이 되었다면 Star를 눌러주세요!
-
-**Made with ❤️ by Tae-system**
-
-</div>
