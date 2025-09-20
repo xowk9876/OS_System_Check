@@ -52,7 +52,7 @@ Shell-Script/
 ```cmd
 # 📥 다운로드 후 바로 실행
 git clone https://github.com/xowk9876/OS_System_Check.git
-cd Shell-Script
+cd OS_System_Check
 
 # 🚀 기본 실행 (진행률 표시)
 windows_system_check.bat
@@ -69,7 +69,7 @@ windows_system_check.bat --help
 ```bash
 # 📥 다운로드 후 바로 실행
 git clone https://github.com/xowk9876/OS_System_Check.git
-cd system-check-scripts
+cd OS_System_Check
 
 # 🔐 실행 권한 부여
 chmod +x rocky_linux_system_check.sh
