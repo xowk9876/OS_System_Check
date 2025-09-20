@@ -278,21 +278,30 @@ sudo ./rocky_linux_system_check.sh
 
 ---
 
-## 🤝 기여하기
-
-이 프로젝트에 기여하고 싶으시다면:
-
-1. **Fork** 이 저장소
-2. **Feature Branch** 생성 (`git checkout -b feature/AmazingFeature`)
-3. **Commit** 변경사항 (`git commit -m 'Add some AmazingFeature'`)
-4. **Push** Branch (`git push origin feature/AmazingFeature`)
-5. **Pull Request** 생성
-
----
-
 ## 📋 라이선스
 
 이 프로젝트는 **MIT 라이선스** 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
+
+---
+
+## 👨‍💻 작성자
+
+<div align="center">
+
+### **Tae-system** 🚀
+
+**시스템 관리 및 자동화 전문가**
+
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/xowk9876)
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/tae_system/)
+
+---
+
+### ⭐ 이 프로젝트가 도움이 되었다면 Star를 눌러주세요!
+
+**Made with ❤️ by Tae-system**
+
+</div>
 
 ---
 
