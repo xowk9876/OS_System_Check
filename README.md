@@ -296,19 +296,6 @@ sudo ./rocky_linux_system_check.sh
 
 ---
 
-## 👨‍💻 작성자
-
-<div align="center">
-
-**Tae-system**
-
-[![GitHub](https://github.com/tae-system)](https://github.com/tae-system)
-[![Instagram](https://www.instagram.com/tae_system)](https://www.instagram.com/tae_system)
-
-</div>
-
----
-
 ## 📈 업데이트 이력
 
 <details>
