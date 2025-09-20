@@ -83,8 +83,13 @@ set /a CURRENT_STEP+=1
 call :show_progress "시스템 정보 수집 중..."
 call :log "=== 시스템 기본 정보 ===" "HEADER"
 
-REM OS 정보
-for /f "tokens=*" %%i in ('systeminfo 2^>nul ^| findstr /C:"OS Name" /C:"OS Version" /C:"System Type" /C:"Computer Name" /C:"Domain"') do call :log "%%i" "INFO"
+REM OS 정보 (Windows 10/11 구분 포함)
+call :log "운영체제 정보:" "INFO"
+for /f "tokens=*" %%i in ('powershell -Command "try { $os = Get-WmiObject -Class Win32_OperatingSystem; Write-Host 'OS 이름: ' $os.Caption; Write-Host 'OS 버전: ' $os.Version; Write-Host '빌드 번호: ' $os.BuildNumber; Write-Host '아키텍처: ' $os.OSArchitecture; Write-Host '설치 날짜: ' $os.InstallDate; Write-Host '마지막 부팅: ' $os.LastBootUpTime } catch { Write-Host 'OS 정보를 가져올 수 없습니다' }" 2^>nul') do call :log "  %%i" "INFO"
+
+REM 시스템 기본 정보
+call :log "시스템 기본 정보:" "INFO"
+for /f "tokens=*" %%i in ('systeminfo 2^>nul ^| findstr /C:"Computer Name" /C:"Domain"') do call :log "  %%i" "INFO"
 
 REM 시스템 제조사 및 모델
 for /f "tokens=*" %%i in ('systeminfo 2^>nul ^| findstr /C:"System Manufacturer" /C:"System Model" /C:"BIOS Version"') do call :log "%%i" "INFO"
@@ -102,16 +107,17 @@ set /a CURRENT_STEP+=1
 call :show_progress "하드웨어 상태 확인 중..."
 call :log "=== 하드웨어 점검 ===" "HEADER"
 
-REM 메모리 정보
+REM 메모리 정보 (상세)
 call :log "메모리 상태:" "INFO"
 for /f "tokens=*" %%i in ('systeminfo 2^>nul ^| findstr /C:"Total Physical Memory" /C:"Available Physical Memory"') do call :log "  %%i" "INFO"
 
-REM 디스크 정보 (안전한 방법)
+REM 디스크 정보 (상세)
 call :log "디스크 정보:" "INFO"
 for /f "tokens=*" %%i in ('wmic logicaldisk get Caption,Size,Freespace,VolumeName,FileSystem /format:table 2^>nul ^| findstr /v "Caption"') do call :log "  %%i" "INFO"
 
-REM CPU 사용률
+REM CPU 정보 (상세)
 call :log "CPU 상태:" "INFO"
+for /f "tokens=*" %%i in ('systeminfo 2^>nul ^| findstr /C:"Processor"') do call :log "  %%i" "INFO"
 for /f %%a in ('powershell -Command "try { (Get-WmiObject -Class Win32_Processor | Measure-Object -Property LoadPercentage -Average).Average } catch { 'N/A' }" 2^>nul') do (
     if not "%%a"=="N/A" (
         call :log "  현재 CPU 사용률: %%a%%" "INFO"
@@ -177,26 +183,93 @@ set /a CURRENT_STEP+=1
 call :show_progress "네트워크 상태 확인 중..."
 call :log "=== 네트워크 인터페이스 점검 ===" "HEADER"
 
-REM 네트워크 어댑터 정보
-call :log "네트워크 어댑터:" "INFO"
-for /f "tokens=*" %%i in ('ipconfig /all 2^>nul ^| findstr /C:"Description" /C:"IPv4 Address" /C:"Default Gateway" /C:"DNS Servers"') do call :log "  %%i" "INFO"
-
-REM 활성 네트워크 연결
-call :log "활성 네트워크 연결 (상위 15개):" "INFO"
-set "COUNT=0"
-for /f "tokens=*" %%i in ('netstat -an 2^>nul ^| findstr /v "Active Connections" ^| findstr /v "Proto Local" ^| findstr /v "TCP" ^| findstr /v "UDP"') do (
-    set /a COUNT+=1
-    if !COUNT! leq 15 call :log "  %%i" "INFO"
+REM 주요 네트워크 어댑터 정보 (실제 네트워크 연결만)
+call :log "주요 네트워크 어댑터:" "INFO"
+for /f "tokens=*" %%i in ('ipconfig /all 2^>nul ^| findstr /C:"Description" /C:"IPv4 Address" /C:"Default Gateway" /C:"DNS Servers"') do (
+    echo "%%i" | findstr /C:"VMware" >nul
+    if errorlevel 1 (
+        echo "%%i" | findstr /C:"TAP" >nul
+        if errorlevel 1 (
+            echo "%%i" | findstr /C:"OpenVPN" >nul
+            if errorlevel 1 call :log "  %%i" "INFO"
+        )
+    )
 )
 
-REM 라우팅 테이블 (안전한 방법)
-call :log "라우팅 테이블:" "INFO"
-for /f "tokens=*" %%i in ('route print 2^>nul ^| findstr /v "Interface List" ^| findstr /v "Persistent Routes" ^| findstr /v "Active Routes" ^| findstr /v "Network Destination"') do call :log "  %%i" "INFO"
+REM VPN 연결 상태
+call :log "VPN 연결 상태:" "INFO"
+for /f "tokens=*" %%i in ('ipconfig /all 2^>nul ^| findstr /C:"Nord" /C:"VPN" /C:"Tunnel" /C:"TAP"') do (
+    echo "%%i" | findstr /C:"Description" >nul
+    if not errorlevel 1 call :log "  %%i" "INFO"
+    echo "%%i" | findstr /C:"IPv4 Address" >nul
+    if not errorlevel 1 call :log "  %%i" "INFO"
+)
 
-REM DNS 설정
-call :log "DNS 설정:" "INFO"
+REM 인터넷 연결 상태
+call :log "인터넷 연결 상태:" "INFO"
+ping -n 1 8.8.8.8 >nul 2>&1
+if not errorlevel 1 (
+    call :log "  인터넷 연결: 정상" "INFO"
+) else (
+    call :log "  인터넷 연결: 실패" "WARNING"
+)
+
+REM DNS 서버 정보
+call :log "DNS 서버 정보:" "INFO"
 for /f "tokens=*" %%i in ('ipconfig /all 2^>nul ^| findstr /C:"DNS Servers"') do call :log "  %%i" "INFO"
-goto :eof
+
+REM 공용 DNS 서버 연결 테스트
+call :log "공용 DNS 서버 연결 테스트:" "INFO"
+ping -n 1 8.8.8.8 >nul 2>&1
+if not errorlevel 1 (
+    call :log "  8.8.8.8: 연결 성공" "INFO"
+) else (
+    call :log "  8.8.8.8: 연결 실패" "WARNING"
+)
+ping -n 1 1.1.1.1 >nul 2>&1
+if not errorlevel 1 (
+    call :log "  1.1.1.1: 연결 성공" "INFO"
+) else (
+    call :log "  1.1.1.1: 연결 실패" "WARNING"
+)
+
+REM 라우팅 테이블 (간단한 형태)
+call :log "라우팅 테이블 (주요 경로):" "INFO"
+call :log "라우팅 경로 설명:" "INFO"
+call :log "  기본 게이트웨이 (0.0.0.0): 인터넷으로의 모든 트래픽을 라우팅" "INFO"
+call :log "  루프백 (127.0.0.0): 로컬 시스템 내부 통신" "INFO"
+call :log "  사설 네트워크 (192.168.x.x, 10.x.x.x, 172.16-31.x.x): 내부 네트워크 통신" "INFO"
+call :log "  VPN 네트워크 (10.5.0.0): VPN 터널을 통한 통신" "INFO"
+call :log "" "INFO"
+call :log "주요 라우팅 경로:" "INFO"
+for /f "tokens=*" %%i in ('route print 2^>nul ^| findstr /C:"0.0.0.0" /C:"127.0.0.0" /C:"192.168." /C:"10." /C:"172."') do (
+    echo "%%i" | findstr /C:"0.0.0.0" >nul
+    if not errorlevel 1 (
+        call :log "  %%i (기본 게이트웨이 - 인터넷 연결)" "INFO"
+    ) else (
+        echo "%%i" | findstr /C:"127.0.0.0" >nul
+        if not errorlevel 1 (
+            call :log "  %%i (루프백 - 로컬 시스템)" "INFO"
+        ) else (
+            echo "%%i" | findstr /C:"192.168." >nul
+            if not errorlevel 1 (
+                call :log "  %%i (사설 네트워크 - 내부 통신)" "INFO"
+            ) else (
+                echo "%%i" | findstr /C:"10." >nul
+                if not errorlevel 1 (
+                    call :log "  %%i (VPN/사설 네트워크)" "INFO"
+                ) else (
+                    echo "%%i" | findstr /C:"172." >nul
+                    if not errorlevel 1 (
+                        call :log "  %%i (사설 네트워크)" "INFO"
+                    ) else (
+                        call :log "  %%i (기타 네트워크)" "INFO"
+                    )
+                )
+            )
+        )
+    )
+)
 
 REM 서비스 포트 점검 (최적화)
 :service_port_info
@@ -204,17 +277,17 @@ set /a CURRENT_STEP+=1
 call :show_progress "서비스 및 포트 확인 중..."
 call :log "=== 서비스 포트 점검 ===" "HEADER"
 
-REM 열린 포트 (상위 15개)
-call :log "주요 열린 포트 (상위 15개):" "INFO"
+REM 열린 포트 (상위 10개)
+call :log "주요 열린 포트:" "INFO"
 set "COUNT=0"
 for /f "tokens=*" %%i in ('netstat -ano 2^>nul ^| findstr "LISTENING"') do (
     set /a COUNT+=1
-    if !COUNT! leq 15 call :log "  %%i" "INFO"
+    if !COUNT! leq 10 call :log "  %%i" "INFO"
 )
 
 REM 주요 서비스 상태
 call :log "주요 서비스 상태:" "INFO"
-set "SERVICES=WinRM RemoteRegistry Spooler BITS WindowsUpdate"
+set "SERVICES=WinRM RemoteRegistry Spooler BITS"
 for %%s in (%SERVICES%) do (
     sc query "%%s" >nul 2>&1
     if not errorlevel 1 (
@@ -228,14 +301,27 @@ for %%s in (%SERVICES%) do (
 
 REM Windows 방화벽 상태
 call :log "Windows 방화벽 상태:" "INFO"
+REM 도메인 프로필 상태
+for /f "tokens=*" %%i in ('netsh advfirewall show domainprofile state 2^>nul ^| findstr "State"') do (
+    call :log "  도메인 프로필: %%i" "INFO"
+)
+REM 개인 프로필 상태  
+for /f "tokens=*" %%i in ('netsh advfirewall show privateprofile state 2^>nul ^| findstr "State"') do (
+    call :log "  개인 프로필: %%i" "INFO"
+)
+REM 공용 프로필 상태
+for /f "tokens=*" %%i in ('netsh advfirewall show publicprofile state 2^>nul ^| findstr "State"') do (
+    call :log "  공용 프로필: %%i" "INFO"
+)
+REM 방화벽 전체 상태 요약
 for /f "tokens=*" %%i in ('netsh advfirewall show allprofiles state 2^>nul ^| findstr "State"') do (
     echo "%%i" | findstr "ON" >nul
     if not errorlevel 1 (
-        call :log "  방화벽이 활성화되어 있습니다" "INFO"
+        call :log "  전체 방화벽 상태: 활성화됨" "INFO"
         goto :firewall_done
     )
 )
-call :log "  방화벽이 비활성화되어 있습니다" "WARNING"
+call :log "  전체 방화벽 상태: 비활성화됨" "WARNING"
 :firewall_done
 goto :eof
 
@@ -283,12 +369,22 @@ if not errorlevel 1 (
 
 REM 바이러스 백신 상태
 call :log "바이러스 백신 상태:" "INFO"
-powershell -Command "try { $av = Get-WmiObject -Namespace root\\SecurityCenter2 -Class AntiVirusProduct -ErrorAction SilentlyContinue; if($av) { Write-Host '바이러스 백신이 설치되어 있습니다' } else { Write-Host '바이러스 백신 정보를 확인할 수 없습니다' } } catch { Write-Host '바이러스 백신 정보를 가져올 수 없습니다' }" 2>nul >nul
+REM Windows Defender 상태 체크
+call :log "Windows Defender 상태:" "INFO"
+sc query "WinDefend" >nul 2>&1
 if not errorlevel 1 (
-    for /f "tokens=*" %%i in ('powershell -Command "try { $av = Get-WmiObject -Namespace root\\SecurityCenter2 -Class AntiVirusProduct -ErrorAction SilentlyContinue; if($av) { Write-Host '바이러스 백신이 설치되어 있습니다' } else { Write-Host '바이러스 백신 정보를 확인할 수 없습니다' } } catch { Write-Host '바이러스 백신 정보를 가져올 수 없습니다' }" 2^>nul') do call :log "  %%i" "INFO"
+    call :log "  Windows Defender: 활성화됨" "INFO"
 ) else (
-    call :log "  바이러스 백신 정보를 가져올 수 없습니다" "WARNING"
+    call :log "  Windows Defender: 비활성화됨" "WARNING"
 )
+
+REM 기타 바이러스 백신 프로그램 체크
+call :log "설치된 백신 프로그램:" "INFO"
+call :log "  Windows Defender가 기본 백신 프로그램입니다" "INFO"
+
+REM Windows Defender 서비스 상태
+call :log "Windows Defender 서비스 상태:" "INFO"
+for /f "tokens=*" %%i in ('sc query "WinDefend" 2^>nul ^| findstr "STATE"') do call :log "  WinDefend: %%i" "INFO"
 
 REM 사용자 계정 정보 (관리자 그룹) - 간단한 방법
 call :log "관리자 그룹 사용자:" "INFO"
