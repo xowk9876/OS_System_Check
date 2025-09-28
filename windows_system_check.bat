@@ -271,6 +271,24 @@ for /f "tokens=*" %%i in ('route print 2^>nul ^| findstr /C:"0.0.0.0" /C:"127.0.
     )
 )
 
+REM 네트워크 티밍 구성 상태 체크
+call :log "네트워크 티밍 구성 상태:" "INFO"
+
+REM PowerShell을 사용하여 NIC 티밍 정보 확인
+for /f "tokens=*" %%i in ('powershell -Command "try { $teams = Get-NetLbfoTeam -ErrorAction SilentlyContinue; if($teams) { Write-Host 'NIC 티밍 팀 발견:'; foreach($team in $teams) { Write-Host '  팀 이름:' $team.Name; Write-Host '  팀 모드:' $team.LbfoTeamMode; Write-Host '  팀 상태:' $team.TeamingMode; Write-Host '  멤버 어댑터:'; foreach($member in $team.Members) { Write-Host '    -' $member.Name '(' $member.Status ')'; } Write-Host ''; } } else { Write-Host 'NIC 티밍 팀: 없음'; } } catch { Write-Host 'NIC 티밍 정보를 가져올 수 없습니다'; }" 2^>nul') do call :log "  %%i" "INFO"
+
+REM 기존 네트워크 어댑터에서 팀 구성 확인
+call :log "네트워크 어댑터 팀 구성 확인:" "INFO"
+for /f "tokens=*" %%i in ('powershell -Command "try { $adapters = Get-NetAdapter | Where-Object {$_.InterfaceDescription -like '*Team*' -or $_.InterfaceDescription -like '*Bond*' -or $_.InterfaceDescription -like '*LACP*'}; if($adapters) { Write-Host '팀 관련 어댑터 발견:'; foreach($adapter in $adapters) { Write-Host '  어댑터:' $adapter.Name; Write-Host '  설명:' $adapter.InterfaceDescription; Write-Host '  상태:' $adapter.Status; Write-Host '  속도:' $adapter.LinkSpeed; Write-Host ''; } } else { Write-Host '팀 관련 어댑터: 없음'; } } catch { Write-Host '팀 관련 어댑터 정보를 가져올 수 없습니다'; }" 2^>nul') do call :log "  %%i" "INFO"
+
+REM Hyper-V 가상 스위치 팀 구성 확인
+call :log "Hyper-V 가상 스위치 팀 구성:" "INFO"
+for /f "tokens=*" %%i in ('powershell -Command "try { $vswitches = Get-VMSwitch -ErrorAction SilentlyContinue; if($vswitches) { Write-Host 'Hyper-V 가상 스위치:'; foreach($vswitch in $vswitches) { Write-Host '  스위치 이름:' $vswitch.Name; Write-Host '  스위치 타입:' $vswitch.SwitchType; Write-Host '  네트워크 어댑터:' $vswitch.NetAdapterInterfaceDescription; Write-Host ''; } } else { Write-Host 'Hyper-V 가상 스위치: 없음'; } } catch { Write-Host 'Hyper-V 가상 스위치 정보를 가져올 수 없습니다'; }" 2^>nul') do call :log "  %%i" "INFO"
+
+REM 네트워크 어댑터 바인딩 순서 확인
+call :log "네트워크 어댑터 바인딩 순서:" "INFO"
+for /f "tokens=*" %%i in ('powershell -Command "try { $bindings = Get-NetAdapterBinding -ErrorAction SilentlyContinue | Where-Object {$_.DisplayName -like '*Microsoft*' -or $_.DisplayName -like '*Team*'}; if($bindings) { Write-Host '주요 바인딩 구성:'; foreach($binding in $bindings) { Write-Host '  어댑터:' $binding.InterfaceAlias; Write-Host '  프로토콜:' $binding.DisplayName; Write-Host '  활성화:' $binding.Enabled; Write-Host ''; } } else { Write-Host '바인딩 정보를 가져올 수 없습니다'; } } catch { Write-Host '바인딩 정보를 가져올 수 없습니다'; }" 2^>nul') do call :log "  %%i" "INFO"
+
 REM 서비스 포트 점검 (최적화)
 :service_port_info
 set /a CURRENT_STEP+=1

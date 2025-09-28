@@ -1,6 +1,21 @@
+<div align="center">
+
 # 🖥️ 시스템 점검 스크립트 모음
 
 **Windows 10/11과 Rocky Linux 8/9 환경을 위한 종합 시스템 점검 도구**
+
+[![GitHub release](https://img.shields.io/github/release/xowk9876/OS_System_Check.svg?style=for-the-badge)](https://github.com/xowk9876/OS_System_Check/releases)
+[![GitHub stars](https://img.shields.io/github/stars/xowk9876/OS_System_Check.svg?style=for-the-badge)](https://github.com/xowk9876/OS_System_Check/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/xowk9876/OS_System_Check.svg?style=for-the-badge)](https://github.com/xowk9876/OS_System_Check/network)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![Windows](https://img.shields.io/badge/Windows-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://www.microsoft.com/windows)
+[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://rockylinux.org/)
+
+[![GitHub issues](https://img.shields.io/github/issues/xowk9876/OS_System_Check.svg?style=flat-square)](https://github.com/xowk9876/OS_System_Check/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/xowk9876/OS_System_Check.svg?style=flat-square)](https://github.com/xowk9876/OS_System_Check/pulls)
+[![GitHub last commit](https://img.shields.io/github/last-commit/xowk9876/OS_System_Check.svg?style=flat-square)](https://github.com/xowk9876/OS_System_Check/commits/main)
+
+</div>
 
 ---
 
@@ -35,54 +50,144 @@
 
 ## 📁 프로젝트 구조
 
+```mermaid
+graph TD
+    A[🖥️ Shell-Script] --> B[🪟 windows_system_check.bat]
+    A --> C[🐧 rocky_linux_system_check.sh]
+    A --> D[📖 README.md]
+    A --> E[📄 LICENSE]
+    
+    B --> F[Windows 10/11<br/>시스템 점검]
+    C --> G[Rocky Linux 8/9<br/>시스템 점검]
+    D --> H[사용법 문서]
+    E --> I[MIT 라이선스]
+    
+    F --> J[📊 점검 결과 파일<br/>system_check_*.txt]
+    G --> J
+    
+    style A fill:#e1f5fe
+    style B fill:#fff3e0
+    style C fill:#f3e5f5
+    style D fill:#e8f5e8
+    style E fill:#fce4ec
 ```
-Shell-Script/
-├── 🪟 windows_system_check.bat      # Windows 10/11 점검 스크립트
-├── 🐧 rocky_linux_system_check.sh   # Rocky Linux 8/9 점검 스크립트
-├── 📖 README.md                     # 사용법 문서
-└── 📄 LICENSE                       # MIT 라이선스
-```
+
+### 📂 파일 상세 정보
+
+| 파일명 | 설명 | 실행 환경 | 권한 |
+|--------|------|-----------|------|
+| `windows_system_check.bat` | Windows 시스템 종합 점검 | Windows 10/11 | 일반 사용자 |
+| `rocky_linux_system_check.sh` | Rocky Linux 시스템 종합 점검 | Rocky Linux 8/9 | 일반 사용자 |
+| `README.md` | 프로젝트 사용법 및 문서 | - | - |
+| `LICENSE` | MIT 라이선스 파일 | - | - |
 
 ---
 
 ## 🚀 빠른 시작
 
+<div align="center">
+
+### ⚡ 원클릭 실행으로 5초 만에 시스템 점검 완료!
+
+</div>
+
+<table>
+<tr>
+<td width="50%">
+
 ### 🪟 Windows 10/11
 
+<div align="center">
+
+[![Windows](https://img.shields.io/badge/Windows-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://www.microsoft.com/windows)
+
+</div>
+
+#### 📥 설치 및 실행
+
 ```cmd
-# 📥 다운로드 후 바로 실행
+# 1️⃣ 저장소 클론
 git clone https://github.com/xowk9876/OS_System_Check.git
 cd OS_System_Check
 
-# 🚀 기본 실행 (진행률 표시)
+# 2️⃣ 기본 실행 (진행률 표시)
 windows_system_check.bat
 
-# 📊 상세 정보와 함께 실행
+# 3️⃣ 상세 정보와 함께 실행
 windows_system_check.bat --verbose
 
-# ❓ 도움말 보기
+# 4️⃣ 도움말 보기
 windows_system_check.bat --help
 ```
 
+#### 🎯 실행 옵션
+
+| 옵션 | 설명 | 예시 |
+|------|------|------|
+| 기본 실행 | 진행률 표시와 함께 실행 | `windows_system_check.bat` |
+| `--verbose` | 상세한 디버그 정보 출력 | `windows_system_check.bat --verbose` |
+| `--help` | 도움말 및 사용법 표시 | `windows_system_check.bat --help` |
+
+</td>
+<td width="50%">
+
 ### 🐧 Rocky Linux 8/9
 
+<div align="center">
+
+[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://rockylinux.org/)
+
+</div>
+
+#### 📥 설치 및 실행
+
 ```bash
-# 📥 다운로드 후 바로 실행
+# 1️⃣ 저장소 클론
 git clone https://github.com/xowk9876/OS_System_Check.git
 cd OS_System_Check
 
-# 🔐 실행 권한 부여
+# 2️⃣ 실행 권한 부여
 chmod +x rocky_linux_system_check.sh
 
-# 🚀 기본 실행 (진행률 표시)
+# 3️⃣ 기본 실행 (진행률 표시)
 ./rocky_linux_system_check.sh
 
-# 📊 상세 정보와 함께 실행
+# 4️⃣ 상세 정보와 함께 실행
 ./rocky_linux_system_check.sh --verbose
 
-# ❓ 도움말 보기
+# 5️⃣ 도움말 보기
 ./rocky_linux_system_check.sh --help
 ```
+
+#### 🎯 실행 옵션
+
+| 옵션 | 설명 | 예시 |
+|------|------|------|
+| 기본 실행 | 진행률 표시와 함께 실행 | `./rocky_linux_system_check.sh` |
+| `--verbose` | 상세한 디버그 정보 출력 | `./rocky_linux_system_check.sh --verbose` |
+| `--help` | 도움말 및 사용법 표시 | `./rocky_linux_system_check.sh --help` |
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📊 기능 비교표
+
+<div align="center">
+
+| 기능 | 🪟 Windows | 🐧 Rocky Linux | 📝 설명 |
+|------|------------|----------------|---------|
+| **실행 시간** | ⚡ 5-8초 | ⚡ 3-6초 | 초고속 시스템 점검 |
+| **점검 항목** | 🔢 7개 카테고리 | 🔢 7개 카테고리 | 동일한 포괄적 점검 |
+| **진행률 표시** | ✅ 실시간 | ✅ 실시간 | 시각적 진행 상황 |
+| **한글 지원** | ✅ 완전 지원 | ✅ 완전 지원 | 모든 메시지 한글화 |
+| **권한 요구** | 🔓 일반 사용자 | 🔓 일반 사용자 | 관리자 권한 불필요 |
+| **결과 파일** | 📄 자동 생성 | 📄 자동 생성 | 타임스탬프 파일명 |
+| **오류 처리** | 🛡️ 강화됨 | 🛡️ 강화됨 | 안전한 실행 보장 |
+
+</div>
 
 ---
 
@@ -119,6 +224,11 @@ chmod +x rocky_linux_system_check.sh
 - DNS 서버 정보
 - 공용 DNS 서버 연결 테스트
 - 라우팅 테이블 (주요 경로)
+- **네트워크 티밍 구성 상태** (새로운 기능!)
+  - NIC 티밍 팀 정보
+  - 팀 관련 어댑터 확인
+  - Hyper-V 가상 스위치 팀 구성
+  - 네트워크 어댑터 바인딩 순서
 
 #### 5. **서비스 및 포트**
 - 주요 열린 포트 (상위 10개)
@@ -167,6 +277,11 @@ chmod +x rocky_linux_system_check.sh
 - IP 주소 및 라우팅
 - 네트워크 연결 상태
 - DNS 설정
+- **네트워크 본딩 구성 상태** (새로운 기능!)
+  - 본딩 모듈 로드 상태
+  - 본딩 인터페이스 및 모드 확인
+  - 슬레이브 인터페이스 상태
+  - NetworkManager 본딩 연결
 
 #### 5. **서비스 및 포트**
 - 열린 포트 정보
@@ -282,12 +397,60 @@ sudo ./rocky_linux_system_check.sh
 
 ---
 
+## 📸 실행 결과 미리보기
+
+<div align="center">
+
+### 🪟 Windows 실행 화면
+
+```cmd
+🖥️  Windows 시스템 점검을 시작합니다...
+═══════════════════════════════════════════════════════════════
+
+📊 진행률: [████████████████████████████████████████] 100% (7/7)
+
+✅ 시스템 점검 완료!
+📄 결과 파일: system_check_2025-01-27_14-30-15.txt
+⏱️  실행 시간: 6.2초
+```
+
+### 🐧 Rocky Linux 실행 화면
+
+```bash
+🖥️  Rocky Linux 시스템 점검을 시작합니다...
+═══════════════════════════════════════════════════════════════
+
+📊 진행률: [████████████████████████████████████████] 100% (7/7)
+
+✅ 시스템 점검 완료!
+📄 결과 파일: system_check_2025-01-27_14-30-15.txt
+⏱️  실행 시간: 4.8초
+```
+
+</div>
+
+---
+
 ## 📈 업데이트 이력
 
 <details>
 <summary><strong>📅 버전 히스토리</summary>
 
-### 🆕 v2.0.0 (2025-09-21)
+### 🆕 v2.1.0 (2025-01-27)
+- ✅ **Linux 본딩 구성 상태 체크 기능 추가**
+  - 본딩 모듈 로드 상태 확인
+  - 본딩 인터페이스 및 모드 분석
+  - 슬레이브 인터페이스 상태 모니터링
+  - NetworkManager 본딩 연결 확인
+- ✅ **Windows 티밍 구성 상태 체크 기능 추가**
+  - NIC 티밍 팀 정보 분석
+  - 팀 관련 어댑터 상태 확인
+  - Hyper-V 가상 스위치 팀 구성
+  - 네트워크 어댑터 바인딩 순서
+- ✅ README.md에서 프로젝트 통계 섹션 제거
+- ✅ 전문가 설명 간소화
+
+### 🔧 v2.0.0 (2025-09-21)
 - ✅ Windows Update 서비스 체크 제거
 - ✅ 방화벽 상태 상세 정보 추가 (도메인/개인/공용 프로필)
 - ✅ 바이러스 백신 상태 개선 (Windows Defender 상세 정보)
@@ -314,13 +477,70 @@ sudo ./rocky_linux_system_check.sh
 
 ---
 
+## 🤝 기여하기
+
+<div align="center">
+
+### 💡 이 프로젝트에 기여하고 싶으신가요?
+
+</div>
+
+### 🐛 버그 리포트
+
+버그를 발견하셨나요? [Issues](https://github.com/xowk9876/OS_System_Check/issues)에서 신고해주세요!
+
+**버그 리포트 시 포함해주세요:**
+- 🖥️ 운영체제 및 버전
+- 📝 실행 명령어
+- 📄 오류 메시지 전체
+- 🔄 재현 단계
+
+### ✨ 기능 제안
+
+새로운 기능을 제안하고 싶으신가요? [Discussions](https://github.com/xowk9876/OS_System_Check/discussions)에서 아이디어를 공유해주세요!
+
+### 🔧 Pull Request
+
+코드 개선이나 새로운 기능을 구현하셨나요? Pull Request를 보내주세요!
+
+**기여 가이드라인:**
+1. 🍴 Fork the repository
+2. 🌿 Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. 💾 Commit your changes (`git commit -m 'Add amazing feature'`)
+4. 📤 Push to the branch (`git push origin feature/amazing-feature`)
+5. 🔀 Open a Pull Request
+
+### 📋 기여 체크리스트
+
+- [ ] 코드가 기존 스타일과 일치하는가?
+- [ ] 새로운 기능에 대한 테스트를 추가했는가?
+- [ ] README.md를 업데이트했는가?
+- [ ] 모든 테스트가 통과하는가?
+
+---
+
+## 📞 지원 및 문의
+
+<div align="center">
+
+### 🆘 도움이 필요하신가요?
+
+</div>
+
+| 문의 유형 | 연락 방법 | 응답 시간 |
+|-----------|-----------|-----------|
+| 🐛 **버그 리포트** | [GitHub Issues](https://github.com/xowk9876/OS_System_Check/issues) | 24시간 이내 |
+| 💡 **기능 제안** | [GitHub Discussions](https://github.com/xowk9876/OS_System_Check/discussions) | 48시간 이내 |
+| ❓ **사용법 문의** | [GitHub Discussions](https://github.com/xowk9876/OS_System_Check/discussions) | 24시간 이내 |
+| 📧 **기타 문의** | [Instagram](https://www.instagram.com/tae_system/) | 48시간 이내 |
+
+---
+
 ## 👨‍💻 작성자
 
 <div align="center">
 
 ### **Tae-system** 🚀
-
-**시스템 관리 및 자동화 전문가**
 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/xowk9876)
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/tae_system/)
@@ -328,6 +548,13 @@ sudo ./rocky_linux_system_check.sh
 ---
 
 ### ⭐ 이 프로젝트가 도움이 되었다면 Star를 눌러주세요!
+
+<div align="center">
+
+[![GitHub stars](https://img.shields.io/github/stars/xowk9876/OS_System_Check?style=social)](https://github.com/xowk9876/OS_System_Check/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/xowk9876/OS_System_Check?style=social)](https://github.com/xowk9876/OS_System_Check/network)
+
+---
 
 **Made with ❤️ by Tae-system**
 

@@ -273,6 +273,79 @@ network_info() {
         done
     fi
     
+    # 네트워크 본딩 구성 상태 체크
+    log "네트워크 본딩 구성 상태:" "INFO"
+    
+    # 본딩 모듈 로드 상태 확인
+    if lsmod | grep -q bonding; then
+        log "  본딩 모듈: 로드됨" "INFO"
+        
+        # 본딩 인터페이스 확인
+        local bonding_interfaces=$(ls /sys/class/net/ | grep -E '^bond[0-9]+$' 2>/dev/null)
+        if [[ -n "$bonding_interfaces" ]]; then
+            log "  본딩 인터페이스 발견:" "INFO"
+            for bond in $bonding_interfaces; do
+                log "    본딩 인터페이스: $bond" "INFO"
+                
+                # 본딩 모드 확인
+                if [[ -f "/sys/class/net/$bond/bonding/mode" ]]; then
+                    local bond_mode=$(cat "/sys/class/net/$bond/bonding/mode" 2>/dev/null)
+                    log "      본딩 모드: $bond_mode" "INFO"
+                fi
+                
+                # 본딩 상태 확인
+                if [[ -f "/sys/class/net/$bond/bonding/mii_status" ]]; then
+                    local mii_status=$(cat "/sys/class/net/$bond/bonding/mii_status" 2>/dev/null)
+                    log "      MII 상태: $mii_status" "INFO"
+                fi
+                
+                # 슬레이브 인터페이스 확인
+                if [[ -f "/sys/class/net/$bond/bonding/slaves" ]]; then
+                    local slaves=$(cat "/sys/class/net/$bond/bonding/slaves" 2>/dev/null)
+                    if [[ -n "$slaves" ]]; then
+                        log "      슬레이브 인터페이스: $slaves" "INFO"
+                        
+                        # 각 슬레이브의 상태 확인
+                        for slave in $slaves; do
+                            if [[ -f "/sys/class/net/$bond/bonding/slave_$slave/state" ]]; then
+                                local slave_state=$(cat "/sys/class/net/$bond/bonding/slave_$slave/state" 2>/dev/null)
+                                log "        $slave 상태: $slave_state" "INFO"
+                            fi
+                        done
+                    else
+                        log "      슬레이브 인터페이스: 없음" "WARNING"
+                    fi
+                fi
+                
+                # 본딩 통계 정보
+                if [[ -f "/proc/net/bonding/$bond" ]]; then
+                    log "      본딩 통계:" "INFO"
+                    grep -E "Bonding Mode|MII Status|Slave Interface" "/proc/net/bonding/$bond" 2>/dev/null | while read line; do
+                        log "        $line" "INFO"
+                    done
+                fi
+            done
+        else
+            log "  본딩 인터페이스: 없음" "INFO"
+        fi
+        
+        # NetworkManager 본딩 연결 확인
+        if command -v nmcli >/dev/null 2>&1; then
+            local nm_bonds=$(nmcli connection show | grep -i bond | wc -l)
+            if [[ $nm_bonds -gt 0 ]]; then
+                log "  NetworkManager 본딩 연결: $nm_bonds 개" "INFO"
+                nmcli connection show | grep -i bond | while read line; do
+                    log "    $line" "INFO"
+                done
+            else
+                log "  NetworkManager 본딩 연결: 없음" "INFO"
+            fi
+        fi
+    else
+        log "  본딩 모듈: 로드되지 않음" "INFO"
+        log "  본딩 기능을 사용하려면 'modprobe bonding' 실행 필요" "INFO"
+    fi
+    
     sleep 0.3
 }
 
