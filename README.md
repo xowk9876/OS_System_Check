@@ -327,51 +327,21 @@ chmod +x rocky_linux_system_check.sh
 
 ## 🛠️ 문제 해결
 
-<details>
-<summary><strong>🪟 Windows 관련 문제</summary>
+### 🪟 Windows 문제
 
-### ❌ "wmic is not recognized" 오류
-```cmd
-# 해결방법: PowerShell 명령어로 자동 대체됨
-# 추가 조치 불필요
-```
+| 문제 | 해결방법 |
+|------|----------|
+| **wmic 명령어 오류** | PowerShell로 자동 대체됨 |
+| **한글 문자 깨짐** | UTF-8 인코딩 자동 설정됨 |
+| **관리자 권한 필요** | 우클릭 → "관리자 권한으로 실행" |
 
-### ❌ 한글 문자 깨짐 현상
-```cmd
-# 해결방법: UTF-8 인코딩 자동 설정됨
-chcp 65001
-```
+### 🐧 Rocky Linux 문제
 
-### ❌ 관리자 권한 필요 오류
-```cmd
-# 해결방법: 관리자 권한으로 실행
-# 우클릭 → "관리자 권한으로 실행"
-```
-
-</details>
-
-<details>
-<summary><strong>🐧 Rocky Linux 관련 문제</summary>
-
-### ❌ "Permission denied" 오류
-```bash
-# 해결방법: 실행 권한 부여
-chmod +x rocky_linux_system_check.sh
-```
-
-### ❌ 명령어를 찾을 수 없음
-```bash
-# 해결방법: 필요한 패키지 설치
-sudo yum install net-tools procps-ng ss
-```
-
-### ❌ 일부 기능 권한 부족
-```bash
-# 해결방법: sudo 권한으로 실행
-sudo ./rocky_linux_system_check.sh
-```
-
-</details>
+| 문제 | 해결방법 |
+|------|----------|
+| **Permission denied** | `chmod +x rocky_linux_system_check.sh` |
+| **명령어를 찾을 수 없음** | `sudo yum install net-tools procps-ng ss` |
+| **권한 부족** | `sudo ./rocky_linux_system_check.sh` |
 
 ---
 
