@@ -23,8 +23,8 @@
 <td width="50%">
 
 #### 🔧 **사용자 친화적**
-- 📁 **자동 파일 생성**: 타임스탬프 결과 파일
 - 🌏 **완전 한글화**: 모든 메시지 및 출력을 한글로 표시
+- 📁 **자동 파일 생성**: 타임스탬프 결과 파일
 - 📱 **간편한 실행**: 원클릭으로 모든 점검 완료
 
 </td>
@@ -160,7 +160,7 @@ chmod +x rocky_linux_system_check.sh
 | **실행 시간** | ⚡ 5-8초 | ⚡ 3-6초 | 초고속 시스템 점검 |
 | **점검 항목** | 🔢 7개 카테고리 | 🔢 7개 카테고리 | 동일한 포괄적 점검 |
 | **진행률 표시** | ✅ 실시간 | ✅ 실시간 | 시각적 진행 상황 |
-| 🌏 **완전 한글화** | ✅ 완전 지원 | ✅ 완전 지원 | 모든 메시지 및 출력을 한글로 표시 |
+| **한글 지원** | ✅ 완전 지원 | ✅ 완전 지원 | 모든 메시지 및 출력을 한글로 표시 |
 | **권한 요구** | 🔓 일반 사용자 | 🔓 일반 사용자 | 관리자 권한 불필요 |
 | **결과 파일** | 📄 자동 생성 | 📄 자동 생성 | 타임스탬프 파일명 |
 | **오류 처리** | 🛡️ 강화됨 | 🛡️ 강화됨 | 안전한 실행 보장 |
@@ -414,7 +414,7 @@ sudo ./rocky_linux_system_check.sh
 <details>
 <summary><strong>📅 버전 히스토리</summary>
 
-### 🆕 v2.1.0 (2025-01-27)
+### 🆕 v2.1 (2025-01-27)
 - ✅ **Linux 본딩 구성 상태 체크 기능 추가**
   - 본딩 모듈 로드 상태 확인
   - 본딩 인터페이스 및 모드 분석
@@ -428,7 +428,7 @@ sudo ./rocky_linux_system_check.sh
 - ✅ README.md에서 프로젝트 통계 섹션 제거
 - ✅ 전문가 설명 간소화
 
-### 🔧 v2.0.0 (2025-09-21)
+### 🔧 v2.0 (2025-09-21)
 - ✅ Windows Update 서비스 체크 제거
 - ✅ 방화벽 상태 상세 정보 추가 (도메인/개인/공용 프로필)
 - ✅ 바이러스 백신 상태 개선 (Windows Defender 상세 정보)
@@ -437,13 +437,6 @@ sudo ./rocky_linux_system_check.sh
 - ✅ DNS 서버 정보 확장
 - ✅ PowerShell 구문 오류 완전 해결
 - ✅ 모든 명령어를 안전한 배치 파일 명령어로 대체
-
-### 🔧 v1.6.1 (2025-09-20)
-- ✅ 네트워크 인터페이스 및 IP 주소 통합 표시
-- ✅ 정보 그룹핑 개선으로 가독성 향상
-- ✅ 계층적 네트워크 정보 구조 적용
-- ✅ Windows 스크립트 완전 한글화
-- ✅ 한글 문자 인식 오류 완전 해결
 
 </details>
 
@@ -455,54 +448,12 @@ sudo ./rocky_linux_system_check.sh
 
 ---
 
-## 🤝 기여하기
-
-<div align="center">
-
-### 💡 이 프로젝트에 기여하고 싶으신가요?
-
-</div>
-
-### 🐛 버그 리포트
-
-버그를 발견하셨나요? [Issues](https://github.com/xowk9876/OS_System_Check/issues)에서 신고해주세요!
-
-**버그 리포트 시 포함해주세요:**
-- 🖥️ 운영체제 및 버전
-- 📝 실행 명령어
-- 📄 오류 메시지 전체
-- 🔄 재현 단계
-
-### ✨ 기능 제안
-
-새로운 기능을 제안하고 싶으신가요? [Discussions](https://github.com/xowk9876/OS_System_Check/discussions)에서 아이디어를 공유해주세요!
-
-### 🔧 Pull Request
-
-코드 개선이나 새로운 기능을 구현하셨나요? Pull Request를 보내주세요!
-
-**기여 가이드라인:**
-1. 🍴 Fork the repository
-2. 🌿 Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. 💾 Commit your changes (`git commit -m 'Add amazing feature'`)
-4. 📤 Push to the branch (`git push origin feature/amazing-feature`)
-5. 🔀 Open a Pull Request
-
-### 📋 기여 체크리스트
-
-- [ ] 코드가 기존 스타일과 일치하는가?
-- [ ] 새로운 기능에 대한 테스트를 추가했는가?
-- [ ] README.md를 업데이트했는가?
-- [ ] 모든 테스트가 통과하는가?
-
----
-
 ## 👨‍💻 작성자
 
 **Tae-system** 🚀
 
-- [GitHub](https://github.com/xowk9876)
-- [Instagram](https://www.instagram.com/tae_system/)
+- 🐙 [GitHub](https://github.com/xowk9876)
+- 📷 [Instagram](https://www.instagram.com/tae_system/)
 
 ---
 
