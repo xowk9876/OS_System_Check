@@ -1,21 +1,6 @@
-<div align="center">
-
 # 🖥️ 시스템 점검 스크립트 모음
 
 **Windows 10/11과 Rocky Linux 8/9 환경을 위한 종합 시스템 점검 도구**
-
-[![GitHub release](https://img.shields.io/github/release/xowk9876/OS_System_Check.svg?style=for-the-badge)](https://github.com/xowk9876/OS_System_Check/releases)
-[![GitHub stars](https://img.shields.io/github/stars/xowk9876/OS_System_Check.svg?style=for-the-badge)](https://github.com/xowk9876/OS_System_Check/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/xowk9876/OS_System_Check.svg?style=for-the-badge)](https://github.com/xowk9876/OS_System_Check/network)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
-[![Windows](https://img.shields.io/badge/Windows-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://www.microsoft.com/windows)
-[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://rockylinux.org/)
-
-[![GitHub issues](https://img.shields.io/github/issues/xowk9876/OS_System_Check.svg?style=flat-square)](https://github.com/xowk9876/OS_System_Check/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/xowk9876/OS_System_Check.svg?style=flat-square)](https://github.com/xowk9876/OS_System_Check/pulls)
-[![GitHub last commit](https://img.shields.io/github/last-commit/xowk9876/OS_System_Check.svg?style=flat-square)](https://github.com/xowk9876/OS_System_Check/commits/main)
-
-</div>
 
 ---
 
@@ -76,8 +61,8 @@ graph TD
 
 | 파일명 | 설명 | 실행 환경 | 권한 |
 |--------|------|-----------|------|
-| `windows_system_check.bat` | Windows 시스템 종합 점검 | Windows 10/11 | 일반 사용자 |
-| `rocky_linux_system_check.sh` | Rocky Linux 시스템 종합 점검 | Rocky Linux 8/9 | 일반 사용자 |
+| `windows_system_check.bat` | Windows 시스템 종합 점검 | Windows 10/11 | 일반 사용자 및 관라자 |
+| `rocky_linux_system_check.sh` | Rocky Linux 시스템 종합 점검 | Rocky Linux 8/9 | 일반 사용자 및 관리자 |
 | `README.md` | 프로젝트 사용법 및 문서 | - | - |
 | `LICENSE` | MIT 라이선스 파일 | - | - |
 
@@ -91,11 +76,9 @@ graph TD
 
 </div>
 
-<table>
-<tr>
-<td width="50%">
+---
 
-### 🪟 Windows 10/11
+## 🪟 Windows 10/11
 
 <div align="center">
 
@@ -103,7 +86,7 @@ graph TD
 
 </div>
 
-#### 📥 설치 및 실행
+### 📥 설치 및 실행
 
 ```cmd
 # 1️⃣ 저장소 클론
@@ -120,7 +103,7 @@ windows_system_check.bat --verbose
 windows_system_check.bat --help
 ```
 
-#### 🎯 실행 옵션
+### 🎯 실행 옵션
 
 | 옵션 | 설명 | 예시 |
 |------|------|------|
@@ -128,10 +111,9 @@ windows_system_check.bat --help
 | `--verbose` | 상세한 디버그 정보 출력 | `windows_system_check.bat --verbose` |
 | `--help` | 도움말 및 사용법 표시 | `windows_system_check.bat --help` |
 
-</td>
-<td width="50%">
+---
 
-### 🐧 Rocky Linux 8/9
+## 🐧 Rocky Linux 8/9
 
 <div align="center">
 
@@ -139,7 +121,7 @@ windows_system_check.bat --help
 
 </div>
 
-#### 📥 설치 및 실행
+### 📥 설치 및 실행
 
 ```bash
 # 1️⃣ 저장소 클론
@@ -159,17 +141,13 @@ chmod +x rocky_linux_system_check.sh
 ./rocky_linux_system_check.sh --help
 ```
 
-#### 🎯 실행 옵션
+### 🎯 실행 옵션
 
 | 옵션 | 설명 | 예시 |
 |------|------|------|
 | 기본 실행 | 진행률 표시와 함께 실행 | `./rocky_linux_system_check.sh` |
 | `--verbose` | 상세한 디버그 정보 출력 | `./rocky_linux_system_check.sh --verbose` |
 | `--help` | 도움말 및 사용법 표시 | `./rocky_linux_system_check.sh --help` |
-
-</td>
-</tr>
-</table>
 
 ---
 
@@ -182,7 +160,7 @@ chmod +x rocky_linux_system_check.sh
 | **실행 시간** | ⚡ 5-8초 | ⚡ 3-6초 | 초고속 시스템 점검 |
 | **점검 항목** | 🔢 7개 카테고리 | 🔢 7개 카테고리 | 동일한 포괄적 점검 |
 | **진행률 표시** | ✅ 실시간 | ✅ 실시간 | 시각적 진행 상황 |
-| **한글 지원** | ✅ 완전 지원 | ✅ 완전 지원 | 모든 메시지 한글화 |
+| 🌏 **완전 한글화** | ✅ 완전 지원 | ✅ 완전 지원 | 모든 메시지 및 출력을 한글로 표시 |
 | **권한 요구** | 🔓 일반 사용자 | 🔓 일반 사용자 | 관리자 권한 불필요 |
 | **결과 파일** | 📄 자동 생성 | 📄 자동 생성 | 타임스탬프 파일명 |
 | **오류 처리** | 🛡️ 강화됨 | 🛡️ 강화됨 | 안전한 실행 보장 |
@@ -519,43 +497,15 @@ sudo ./rocky_linux_system_check.sh
 
 ---
 
-## 📞 지원 및 문의
-
-<div align="center">
-
-### 🆘 도움이 필요하신가요?
-
-</div>
-
-| 문의 유형 | 연락 방법 | 응답 시간 |
-|-----------|-----------|-----------|
-| 🐛 **버그 리포트** | [GitHub Issues](https://github.com/xowk9876/OS_System_Check/issues) | 24시간 이내 |
-| 💡 **기능 제안** | [GitHub Discussions](https://github.com/xowk9876/OS_System_Check/discussions) | 48시간 이내 |
-| ❓ **사용법 문의** | [GitHub Discussions](https://github.com/xowk9876/OS_System_Check/discussions) | 24시간 이내 |
-| 📧 **기타 문의** | [Instagram](https://www.instagram.com/tae_system/) | 48시간 이내 |
-
----
-
 ## 👨‍💻 작성자
 
-<div align="center">
+**Tae-system** 🚀
 
-### **Tae-system** 🚀
-
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/xowk9876)
-[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/tae_system/)
+- [GitHub](https://github.com/xowk9876)
+- [Instagram](https://www.instagram.com/tae_system/)
 
 ---
 
 ### ⭐ 이 프로젝트가 도움이 되었다면 Star를 눌러주세요!
 
-<div align="center">
-
-[![GitHub stars](https://img.shields.io/github/stars/xowk9876/OS_System_Check?style=social)](https://github.com/xowk9876/OS_System_Check/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/xowk9876/OS_System_Check?style=social)](https://github.com/xowk9876/OS_System_Check/network)
-
----
-
 **Made with ❤️ by Tae-system**
-
-</div>
