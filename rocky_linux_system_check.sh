@@ -2,6 +2,8 @@
 # Rocky Linux 8/9 시스템 점검 스크립트 (최적화 + 진행률 표시)
 # 작성자: Tae-system
 # 용도: 빠르고 효율적인 시스템 점검
+# 버전: v2.1 (2025-01-27)
+# 라이선스: MIT
 
 # 색상 코드
 RED='\033[0;31m'
@@ -23,22 +25,26 @@ CURRENT_STEP=0
 
 # 도움말 함수
 show_help() {
-    echo -e "${CYAN}Rocky Linux 시스템 점검 스크립트 (최적화 버전) 사용법:${NC}"
+    echo -e "${CYAN}🖥️  Rocky Linux 시스템 점검 스크립트 v2.1${NC}"
+    echo -e "${CYAN}═══════════════════════════════════════════════════════════════${NC}"
     echo ""
-    echo "사용법: $0 [옵션]"
+    echo -e "${WHITE}사용법:${NC} $0 [옵션]"
     echo ""
-    echo "옵션:"
-    echo "  -v, --verbose     상세한 정보 출력"
-    echo "  -h, --help        이 도움말 표시"
+    echo -e "${YELLOW}옵션:${NC}"
+    echo -e "  ${GREEN}-v, --verbose${NC}     상세한 정보 출력"
+    echo -e "  ${GREEN}-h, --help${NC}        이 도움말 표시"
     echo ""
-    echo "예시:"
-    echo "  $0"
-    echo "  $0 --verbose"
+    echo -e "${YELLOW}예시:${NC}"
+    echo -e "  ${BLUE}$0${NC}"
+    echo -e "  ${BLUE}$0 --verbose${NC}"
     echo ""
-    echo "특징:"
-    echo "  - 실시간 진행률 표시"
-    echo "  - 예상 소요 시간: 3-8초"
-    echo "  - 결과 파일 자동 생성"
+    echo -e "${YELLOW}특징:${NC}"
+    echo -e "  ${GREEN}⚡${NC} 실시간 진행률 표시"
+    echo -e "  ${GREEN}⏱️${NC} 예상 소요 시간: 3-8초"
+    echo -e "  ${GREEN}📄${NC} 결과 파일 자동 생성"
+    echo -e "  ${GREEN}🔧${NC} 네트워크 본딩 구성 상태 체크"
+    echo ""
+    echo -e "${CYAN}작성자: Tae-system | 라이선스: MIT${NC}"
 }
 
 # 진행률 표시 함수
@@ -137,10 +143,14 @@ hardware_info() {
         
         # CPU 사용률 (간단한 방법)
         if command -v top >/dev/null 2>&1; then
-            local cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | sed 's/%us,//')
-            log "현재 CPU 사용률: ${cpu_usage}%" "INFO"
-            if (( $(echo "$cpu_usage > 80" | bc -l) )); then
-                log "경고: CPU 사용률이 80%를 초과했습니다!" "WARNING"
+            local cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | sed 's/%us,//' | cut -d. -f1)
+            if [[ -n "$cpu_usage" && "$cpu_usage" =~ ^[0-9]+$ ]]; then
+                log "현재 CPU 사용률: ${cpu_usage}%" "INFO"
+                if (( cpu_usage > 80 )); then
+                    log "경고: CPU 사용률이 80%를 초과했습니다!" "WARNING"
+                fi
+            else
+                log "CPU 사용률을 확인할 수 없습니다" "INFO"
             fi
         fi
     fi
@@ -441,9 +451,11 @@ server_uptime_info() {
         
         # CPU 코어 수와 비교
         local cpu_cores=$(nproc)
-        local load_1min=$(echo "$load_avg" | awk '{print $1}')
-        if (( $(echo "$load_1min > $cpu_cores" | bc -l) )); then
-            log "경고: 1분 로드 평균이 CPU 코어 수를 초과했습니다!" "WARNING"
+        local load_1min=$(echo "$load_avg" | awk '{print $1}' | cut -d. -f1)
+        if [[ -n "$load_1min" && "$load_1min" =~ ^[0-9]+$ ]]; then
+            if (( load_1min > cpu_cores )); then
+                log "경고: 1분 로드 평균이 CPU 코어 수를 초과했습니다!" "WARNING"
+            fi
         fi
     fi
     
@@ -578,10 +590,10 @@ main() {
     log "결과가 파일에 저장되었습니다: $OUTPUT_FILE" "INFO"
     
     echo ""
-    echo "========================================"
-    echo "시스템 점검이 완료되었습니다!"
-    echo "결과 파일: $OUTPUT_FILE"
-    echo "========================================"
+    echo -e "${CYAN}═══════════════════════════════════════════════════════════════${NC}"
+    echo -e "${GREEN}✅ 시스템 점검이 완료되었습니다!${NC}"
+    echo -e "${BLUE}📄 결과 파일: $OUTPUT_FILE${NC}"
+    echo -e "${CYAN}═══════════════════════════════════════════════════════════════${NC}"
 }
 
 # 스크립트 실행

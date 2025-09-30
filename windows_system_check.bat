@@ -2,14 +2,22 @@
 REM Windows 10/11 시스템 점검 배치 스크립트 (최적화 + 진행률 표시)
 REM 작성자: Tae-system
 REM 용도: 빠르고 효율적인 시스템 점검
+REM 버전: v2.1 (2025-01-27)
+REM 라이선스: MIT
 
 setlocal enabledelayedexpansion
 chcp 65001 >nul
 
 REM 변수 설정
 set "VERBOSE=0"
-set "TIMESTAMP=%date:~0,4%-%date:~5,2%-%date:~8,2%_%time:~0,2%-%time:~3,2%-%time:~6,2%"
-set "TIMESTAMP=%TIMESTAMP: =0%"
+REM 타임스탬프 생성 (PowerShell 사용)
+for /f "tokens=*" %%i in ('powershell -Command "Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'" 2^>nul') do set "TIMESTAMP=%%i"
+if not defined TIMESTAMP (
+    REM PowerShell 실패시 기본 방법 사용
+    set "TIMESTAMP=%date:~0,4%-%date:~5,2%-%date:~8,2%_%time:~0,2%-%time:~3,2%-%time:~6,2%"
+    set "TIMESTAMP=%TIMESTAMP: =0%"
+    set "TIMESTAMP=%TIMESTAMP:/=-%"
+)
 set "SCRIPT_DIR=%~dp0"
 set "OUTPUT_FILE=%SCRIPT_DIR%system_check_%TIMESTAMP%.txt"
 set "TOTAL_STEPS=7"
@@ -28,7 +36,8 @@ shift
 goto :parse_args
 
 :help
-echo Windows 시스템 점검 스크립트 (최적화 버전) 사용법:
+echo 🖥️  Windows 시스템 점검 스크립트 v2.1
+echo ═══════════════════════════════════════════════════════════════
 echo.
 echo 사용법: windows_system_check.bat [옵션]
 echo.
@@ -41,9 +50,12 @@ echo   windows_system_check.bat
 echo   windows_system_check.bat --verbose
 echo.
 echo 특징:
-echo   - 실시간 진행률 표시
-echo   - 예상 소요 시간: 5-10초
-echo   - 결과 파일 자동 생성
+echo   ⚡ 실시간 진행률 표시
+echo   ⏱️ 예상 소요 시간: 5-10초
+echo   📄 결과 파일 자동 생성
+echo   🔧 네트워크 티밍 구성 상태 체크
+echo.
+echo 작성자: Tae-system ^| 라이선스: MIT
 goto :eof
 
 REM 진행률 표시 함수
@@ -67,10 +79,13 @@ REM 로그 함수
 set "MSG=%~1"
 set "LEVEL=%~2"
 
-for /f "tokens=1-6 delims=/: " %%a in ('echo %date% %time%') do (
-    set "DT=%%a%%b%%c%%d%%e%%f"
+for /f "tokens=*" %%i in ('powershell -Command "Get-Date -Format 'yyyy-MM-dd HH:mm:ss'" 2^>nul') do set "TIMESTAMP=%%i"
+if not defined TIMESTAMP (
+    for /f "tokens=1-6 delims=/: " %%a in ('echo %date% %time%') do (
+        set "DT=%%a%%b%%c%%d%%e%%f"
+    )
+    set "TIMESTAMP=!DT:~0,4!-!DT:~4,2!-!DT:~6,2! !DT:~8,2!:!DT:~10,2!:!DT:~12,2!"
 )
-set "TIMESTAMP=!DT:~0,4!-!DT:~4,2!-!DT:~6,2! !DT:~8,2!:!DT:~10,2!:!DT:~12,2!"
 set "LOG_MSG=[!TIMESTAMP!] [!LEVEL!] !MSG!"
 
 if "%VERBOSE%"=="1" echo !LOG_MSG!
@@ -216,7 +231,12 @@ if not errorlevel 1 (
 
 REM DNS 서버 정보
 call :log "DNS 서버 정보:" "INFO"
-for /f "tokens=*" %%i in ('ipconfig /all 2^>nul ^| findstr /C:"DNS Servers"') do call :log "  %%i" "INFO"
+for /f "tokens=*" %%i in ('ipconfig /all 2^>nul ^| findstr /C:"DNS Servers" 2^>nul') do (
+    echo "%%i" | findstr /C:"DNS Servers" >nul 2>&1
+    if not errorlevel 1 (
+        call :log "  %%i" "INFO"
+    )
+)
 
 REM 공용 DNS 서버 연결 테스트
 call :log "공용 DNS 서버 연결 테스트:" "INFO"
@@ -288,6 +308,7 @@ for /f "tokens=*" %%i in ('powershell -Command "try { $vswitches = Get-VMSwitch 
 REM 네트워크 어댑터 바인딩 순서 확인
 call :log "네트워크 어댑터 바인딩 순서:" "INFO"
 for /f "tokens=*" %%i in ('powershell -Command "try { $bindings = Get-NetAdapterBinding -ErrorAction SilentlyContinue | Where-Object {$_.DisplayName -like '*Microsoft*' -or $_.DisplayName -like '*Team*'}; if($bindings) { Write-Host '주요 바인딩 구성:'; foreach($binding in $bindings) { Write-Host '  어댑터:' $binding.InterfaceAlias; Write-Host '  프로토콜:' $binding.DisplayName; Write-Host '  활성화:' $binding.Enabled; Write-Host ''; } } else { Write-Host '바인딩 정보를 가져올 수 없습니다'; } } catch { Write-Host '바인딩 정보를 가져올 수 없습니다'; }" 2^>nul') do call :log "  %%i" "INFO"
+goto :eof
 
 REM 서비스 포트 점검 (최적화)
 :service_port_info
@@ -422,12 +443,7 @@ call :log "  컴퓨터명: %COMPUTERNAME%" "INFO"
 
 REM 최근 로그인 실패 기록 (이벤트 로그)
 call :log "최근 로그인 실패 기록 (이벤트 로그):" "INFO"
-powershell -Command "try { $events = Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4625} -MaxEvents 3 -ErrorAction SilentlyContinue; if($events) { Write-Host '최근 로그인 실패 기록이 있습니다' } else { Write-Host '로그인 실패 기록이 없습니다' } } catch { Write-Host '로그인 실패 기록을 가져올 수 없습니다' }" 2>nul >nul
-if not errorlevel 1 (
-    for /f "tokens=*" %%i in ('powershell -Command "try { $events = Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4625} -MaxEvents 3 -ErrorAction SilentlyContinue; if($events) { Write-Host '최근 로그인 실패 기록이 있습니다' } else { Write-Host '로그인 실패 기록이 없습니다' } } catch { Write-Host '로그인 실패 기록을 가져올 수 없습니다' }" 2^>nul') do call :log "  %%i" "INFO"
-) else (
-    call :log "  로그인 실패 기록을 가져올 수 없습니다" "WARNING"
-)
+for /f "tokens=*" %%i in ('powershell -Command "try { $events = Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4625} -MaxEvents 3 -ErrorAction SilentlyContinue; if($events) { Write-Host '최근 로그인 실패 기록이 있습니다' } else { Write-Host '로그인 실패 기록이 없습니다' } } catch { Write-Host '로그인 실패 기록을 가져올 수 없습니다' }" 2^>nul') do call :log "  %%i" "INFO"
 goto :eof
 
 REM 메인 실행 함수
@@ -453,10 +469,12 @@ call :log "시스템 점검을 완료했습니다." "INFO"
 call :log "결과가 파일에 저장되었습니다: %OUTPUT_FILE%" "INFO"
 
 echo.
-echo ========================================
+echo ===============================================================
 echo 시스템 점검이 완료되었습니다!
 echo 결과 파일: %OUTPUT_FILE%
-echo ========================================
+echo ===============================================================
 
-pause
+echo.
+echo 아무 키나 누르면 종료됩니다...
+pause >nul
 goto :eof
