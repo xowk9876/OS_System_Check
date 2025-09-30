@@ -218,7 +218,8 @@ chmod +x rocky_linux_system_check.sh
 
 ## 🛠️ 문제 해결
 
-### Windows 문제
+<details>
+<summary><strong>Windows 문제</strong></summary>
 
 | 문제 | 해결방법 | 추가 정보 |
 |:---:|:---:|:---:|
@@ -227,7 +228,10 @@ chmod +x rocky_linux_system_check.sh
 | **관리자 권한 필요** | 우클릭 → "관리자 권한으로 실행" | 일부 고급 기능만 필요 |
 | **PowerShell 실행 정책** | `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` | 스크립트 실행 허용 |
 
-### Rocky Linux 문제
+</details>
+
+<details>
+<summary><strong>Rocky Linux 문제</strong></summary>
 
 | 문제 | 해결방법 | 추가 정보 |
 |:---:|:---:|:---:|
@@ -235,6 +239,8 @@ chmod +x rocky_linux_system_check.sh
 | **명령어를 찾을 수 없음** | `sudo yum install net-tools procps-ng ss` | 필수 패키지 설치 |
 | **권한 부족** | `sudo ./rocky_linux_system_check.sh` | 관리자 권한으로 실행 |
 | **Bash 버전 오류** | `bash --version` 확인 후 업데이트 | Bash 4.0 이상 필요 |
+
+</details>
 
 ---
 
@@ -263,11 +269,20 @@ chmod +x rocky_linux_system_check.sh
 
 ## 👨‍💻 작성자
 
-**Tae-system**
+<div align="center">
 
-- [GitHub](https://github.com/xowk9876)
-- [Instagram](https://www.instagram.com/tae_system/)
+### 🚀 **Tae-system**
+
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/xowk9876)
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/tae_system/)
 
 ---
 
+### ⭐ **이 프로젝트가 도움이 되었다면 Star를 눌러주세요!**
+
+[![GitHub stars](https://img.shields.io/github/stars/xowk9876/OS_System_Check?style=social)](https://github.com/xowk9876/OS_System_Check)
+[![GitHub forks](https://img.shields.io/github/forks/xowk9876/OS_System_Check?style=social)](https://github.com/xowk9876/OS_System_Check)
+
 **Made with ❤️ by Tae-system**
+
+</div>
